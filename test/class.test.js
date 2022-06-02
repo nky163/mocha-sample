@@ -12,7 +12,19 @@ describe('exportされていないクラスのテスト', () => {
     console.log(testClassObj);
     
     it('sub1', async () => {
-      expect(testClassObj.helloWold()).to.be.equal('Hello World Class');
+      expect(testClassObj.helloWold('')).to.be.equal('Hello World Class');
+    });
+    
+  })
+  
+  describe('exportされていないクラスのメソッドをスタブ化', () => {
+    const target = rewire('../class.js');
+    const targetClass = target.__get__('TestClass');
+    const testClassObj = new targetClass('Hello World');
+    sinon.stub(testClassObj, 'helloWold').returns('STUB');
+    
+    it('sub1', async () => {
+      expect(testClassObj.helloWold()).to.be.equal('STUB');
     });
     
   })
