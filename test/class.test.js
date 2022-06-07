@@ -28,5 +28,34 @@ describe('exportされていないクラスのテスト', () => {
     });
     
   })
+  
+  describe('クラスの中で使われてる関数のスタブ化', () => {
+    
+    
+    
+    it('innerFuncのスタブ化', async () => {
+      // これ無理な奴、、、
+      const target = rewire('../class.js');
+      const stub = sinon.stub().returns(2);
+      target.__set__('innerFunc', stub);
+      const { getClass } = require('../class.js');
+      
+      const obj = getClass('testmsg', 'testAAA');
+      // rewireの効果なし、、！
+      expect(obj.classFunc(1)).to.be.equal(1);
+    });
+    
+    it('innerFuncのスタブ化', async () => {
+      const target = rewire('../class.js');
+      const testFunc = target.__get__('getClass');
+      const stub = sinon.stub().returns(2);
+      target.__set__('innerFunc', stub);
+      
+      const obj = testFunc('testmsg', 'testAAA');
+      expect(obj.classFunc(1)).to.be.equal(2);
+    });
+    
+  });
+  
 });
 
